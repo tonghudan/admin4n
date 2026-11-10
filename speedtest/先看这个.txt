@@ -1,0 +1,31 @@
+如果你双击 bat 窗口一闪就没了，请按下面做：
+
+方法 A（推荐，不依赖双击 bat）
+--------------------------------
+1. 键盘按 Win + R
+2. 粘贴下面整行，回车：
+
+cmd /k "cd /d C:\Users\12522\Downloads\admin4n-cursor-speedtest-repair-toolkit-67da\admin4n-cursor-speedtest-repair-toolkit-67da\speedtest && dir && node -v && npm install --registry=https://registry.npmmirror.com && node server\index.js"
+
+3. 这个黑窗口会一直留着。把里面的英文/中文报错复制发给我。
+4. 若最后出现 “测网速 已启动” 或 started，再打开浏览器：
+   http://127.0.0.1:4177
+
+
+方法 B（更新文件后再双击）
+--------------------------
+请重新下载最新 ZIP（含 OPEN-ME.cmd，已修换行符）：
+https://github.com/tonghudan/admin4n/archive/refs/heads/cursor/speedtest-repair-toolkit-67da.zip
+
+解压后进入 speedtest，双击：
+
+  OPEN-ME.cmd
+
+不要双击 public\index.html。
+
+
+若提示找不到 node
+------------------
+安装：https://nodejs.org/  （选 LTS）
+安装时勾选 Add to PATH
+装完后重新打开方法 A 的命令。
