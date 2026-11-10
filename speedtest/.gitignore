@@ -1,4 +1,6 @@
 node_modules/
+.runtime/
+dist/
 .DS_Store
 *.log
 .env

@@ -4,15 +4,32 @@
   "private": true,
   "description": "测网速 — 国内/国际连通与测速，DNS 与网关修复辅助",
   "type": "module",
+  "bin": "server/pkg-entry.cjs",
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "test:smoke": "node server/smoke-test.js"
+    "test:smoke": "node server/smoke-test.js",
+    "build:win": "pkg server/pkg-entry.cjs --targets node20-win-x64 --output dist/cewangsu.exe"
+  },
+  "pkg": {
+    "assets": [
+      "public/**/*"
+    ],
+    "scripts": [
+      "server/**/*.js"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ],
+    "outputPath": "dist"
   },
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@yao-pkg/pkg": "^6.25.0"
   }
 }

@@ -124,7 +124,11 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ error: err.message || '服务器错误' });
 });
 
-app.listen(PORT, () => {
-  console.log(`测网速 已启动 → http://127.0.0.1:${PORT}`);
+const HOST = process.env.HOST || '0.0.0.0';
+app.listen(PORT, HOST, () => {
+  console.log(`测网速 已启动`);
+  console.log(`  本机访问: http://127.0.0.1:${PORT}`);
+  console.log(`  本机访问: http://localhost:${PORT}`);
   console.log('API: /api/latency  /api/local/download  /api/dns/report');
+  console.log('关掉本窗口即停止服务。');
 });

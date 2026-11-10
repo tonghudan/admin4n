@@ -10,6 +10,19 @@
 
 ## 快速开始
 
+### Windows（推荐：双击批处理）
+
+1. 把整个 `speedtest` 文件夹放到你的电脑  
+2. **双击 `启动测网速.bat`**（或 `start-cewangsu.bat`）  
+3. 等它自动打开浏览器；打不开就手动访问 http://127.0.0.1:4177  
+
+> 只输入 `127.0.0.1` 而不先启动本机服务，页面一定打不开。  
+> 详见同目录 `Windows使用说明.txt`。
+
+可选：在 Windows 上执行 `scripts\build-win-exe.ps1` 生成 `dist\cewangsu.exe`。
+
+### macOS / Linux
+
 ```bash
 cd speedtest
 npm install
@@ -25,7 +38,7 @@ npm run dev          # 改服务器代码自动重载
 npm run test:smoke   # 需先启动服务，做 API 冒烟检查
 ```
 
-环境变量：`PORT`（默认 `4177`）
+环境变量：`PORT`（默认 `4177`），`HOST`（默认 `0.0.0.0`）
 
 ## 界面怎么用
 
