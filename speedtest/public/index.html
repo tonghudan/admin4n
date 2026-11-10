@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>测网速 — 连通 · 速率 · 修复</title>
+    <meta
+      name="description"
+      content="测国内与国际站点延迟、下载与上传速度，并辅助排查 DNS 劫持与网关问题。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Outfit:wght@500;700;800&family=ZCOOL+QingKe+HuangYou&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+
+    <header class="hero">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <svg class="hero__waves" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="waveStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#5eead4" stop-opacity="0.15" />
+            <stop offset="50%" stop-color="#2dd4bf" stop-opacity="0.55" />
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.2" />
+          </linearGradient>
+        </defs>
+        <g class="orbits">
+          <circle cx="900" cy="280" r="90" />
+          <circle cx="900" cy="280" r="160" />
+          <circle cx="900" cy="280" r="240" />
+          <circle cx="900" cy="280" r="330" />
+        </g>
+        <path class="pulse-arc" d="M560 280 Q900 40 1240 280" fill="none" />
+        <path class="pulse-arc pulse-arc--delay" d="M600 320 Q900 120 1200 320" fill="none" />
+        <circle class="beacon" cx="900" cy="280" r="10" />
+      </svg>
+
+      <nav class="topnav">
+        <a class="topnav__brand" href="#top">测网速</a>
+        <div class="topnav__links">
+          <a href="#results">结果</a>
+          <a href="#repair">修复</a>
+        </div>
+      </nav>
+
+      <div class="hero__copy" id="top">
+        <p class="brand-mark">测网速</p>
+        <h1>一眼看清，线路通不通</h1>
+        <p class="lede">
+          同时探测国内主流站点与国际节点的延迟、下载与上传，并给出可执行的 DNS / 网关修复路径。
+        </p>
+        <div class="cta-row">
+          <button type="button" class="btn btn--primary" id="btn-run-all">
+            <span>开始测速</span>
+          </button>
+          <button type="button" class="btn btn--ghost" id="btn-jump-repair">排查 DNS</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel summary" id="summary" hidden>
+        <div class="summary__grid">
+          <article class="metric">
+            <p class="metric__label">国内平均延迟</p>
+            <p class="metric__value" id="sum-domestic">—</p>
+          </article>
+          <article class="metric">
+            <p class="metric__label">国际平均延迟</p>
+            <p class="metric__value" id="sum-intl">—</p>
+          </article>
+          <article class="metric">
+            <p class="metric__label">本机下载</p>
+            <p class="metric__value" id="sum-down">—</p>
+          </article>
+          <article class="metric">
+            <p class="metric__label">本机上传</p>
+            <p class="metric__value" id="sum-up">—</p>
+          </article>
+        </div>
+        <p class="status-line" id="status-line" role="status"></p>
+      </section>
+
+      <section class="panel" id="results">
+        <div class="section-head">
+          <h2>连通与速率</h2>
+          <p>延迟由本机服务端出站测量（避开浏览器 CORS）；下载/上传可用本机环回精测，外站下载为辅助参考。</p>
+        </div>
+
+        <div class="toolbar">
+          <button type="button" class="btn btn--small" id="btn-latency" disabled>只测延迟</button>
+          <button type="button" class="btn btn--small" id="btn-throughput" disabled>本机上下行</button>
+          <button type="button" class="btn btn--small" id="btn-remote-dl" disabled>外站下载抽样</button>
+        </div>
+
+        <div class="tables">
+          <div class="table-wrap">
+            <h3>国内</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>站点</th>
+                  <th>延迟</th>
+                  <th>下载抽样</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-domestic"></tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <h3>国际</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>站点</th>
+                  <th>延迟</th>
+                  <th>下载抽样</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-intl"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel repair" id="repair">
+        <div class="section-head">
+          <h2>修复面板</h2>
+          <p>检测当前 DNS / 网关线索与可疑劫持。应用修改必须在本机用管理员权限脚本，且需你显式确认。</p>
+        </div>
+
+        <div class="cta-row">
+          <button type="button" class="btn btn--primary" id="btn-dns-scan">检测 DNS / 劫持</button>
+          <button type="button" class="btn btn--ghost" id="btn-copy-cmd">复制当前平台命令</button>
+        </div>
+
+        <div class="repair__grid">
+          <article class="repair-card">
+            <h3>当前解析器</h3>
+            <pre id="dns-resolvers" class="code-block">尚未检测</pre>
+            <p class="muted" id="dns-gateway"></p>
+          </article>
+          <article class="repair-card">
+            <h3>探测结论</h3>
+            <ul id="dns-findings" class="findings">
+              <li class="muted">点击「检测」后显示</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="presets">
+          <h3>推荐 DNS</h3>
+          <div id="dns-presets" class="preset-grid"></div>
+        </div>
+
+        <aside class="notice">
+          <strong>权限说明：</strong>
+          网页本身不能改系统 DNS。Linux / macOS / Windows 脚本位于
+          <code>speedtest/scripts/</code>，会展示修改前后状态并备份到
+          <code>~/.cewangsu-dns-backup/</code>。详见
+          <code>scripts/gateway-hints.md</code>。
+        </aside>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>测网速 · 本地工具 · 不静默改系统设置</p>
+    </footer>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

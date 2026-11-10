@@ -1,0 +1,63 @@
+测网速 — Windows 怎么用
+========================
+
+为什么打开 http://127.0.0.1:4177 没反应？
+----------------------------------------
+这个地址是「你自己电脑上的本地服务」。
+必须先在本机启动服务，浏览器才能打开。
+只复制链接、或只在云端/别人电脑启动过，你这边会打不开。
+
+
+推荐方式（本机已有文件时）
+--------------------------
+1. 用资源管理器打开本地的 speedtest 文件夹
+   （里面应能看到 server、public、package.json、若干 .bat）
+
+2. 先双击：
+
+     最简启动.bat
+     或 run-simple.bat
+
+   黑窗口不要关。成功时会打印「测网速 已启动」。
+   然后浏览器打开：http://127.0.0.1:4177
+
+3. 若双击后闪退 / 没反应：
+   - 双击 诊断.bat，把生成的「启动日志.txt」内容发出来
+   - 或右键 最简启动.bat → 编辑，看是否是完整文件
+
+4. 也可以双击 启动测网速.bat（会开最小化服务窗口）
+
+不要直接双击 public\index.html，那样页面接口会失败。
+
+
+首次运行说明
+------------
+- 若本机没有 Node.js，批处理会尝试自动下载便携 Node（需联网，约 30MB）
+- 自动下载失败时，请先安装：https://nodejs.org/ （LTS，勾选 Add to PATH）
+- 然后再双击「启动测网速.bat」
+
+
+改 DNS（可选，需管理员）
+------------------------
+右键「以管理员身份运行」PowerShell，执行：
+
+  cd 你的路径\speedtest\scripts
+  Set-ExecutionPolicy -Scope Process Bypass
+  .\apply-dns-windows.ps1 -Preset aliyun
+
+会先显示当前 DNS，输入 yes 才修改，并自动备份。
+
+
+想做成 EXE？
+------------
+在已安装 Node 的 Windows 上：
+
+  powershell -ExecutionPolicy Bypass -File scripts\build-win-exe.ps1
+
+会在 dist\cewangsu.exe 生成启动文件。
+更稳妥的日常用法仍是「启动测网速.bat」。
+
+
+停止服务
+--------
+关闭标题为「测网速服务」的那个命令行窗口即可。
